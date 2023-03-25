@@ -62,7 +62,7 @@ import { prisma } from "~/server/db";
 import PageLayout from "~/components/layout";
 import Image from "next/image";
 import { LoadingPage } from "~/components/Loading";
-import { PostView } from "./PostView";
+import PostView from "../components/PostView";
 import dayjs from "dayjs";
 
 export const getStaticProps: GetStaticProps = async (context) => {

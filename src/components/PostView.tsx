@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { RouterOutputs } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 
 type PostWithUser = RouterOutputs["posts"]["getAll"][number];
-export const PostView = (props: PostWithUser) => {
+
+export default function PostView(props: PostWithUser) {
   const { post, author } = props;
   return (
     <div className="flex gap-3 border-b border-slate-400 p-4" key={post.id}>
@@ -30,4 +31,4 @@ export const PostView = (props: PostWithUser) => {
       </div>
     </div>
   );
-};
+}
