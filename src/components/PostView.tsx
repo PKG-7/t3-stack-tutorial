@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dayjs from "dayjs";
 import type { RouterOutputs } from "~/utils/api";
-
+//
 type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
 export default function PostView(props: PostWithUser) {
