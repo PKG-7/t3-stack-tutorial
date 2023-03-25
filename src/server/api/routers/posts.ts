@@ -1,14 +1,14 @@
-import { privateProcedure } from "./../trpc";
-import clerkClient, { User } from "@clerk/clerk-sdk-node";
+import clerkClient from "@clerk/clerk-sdk-node";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { privateProcedure } from "./../trpc";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
+import type { Post } from "@prisma/client";
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
-import type { Post } from "@prisma/client";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
