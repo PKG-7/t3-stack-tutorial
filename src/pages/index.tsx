@@ -1,4 +1,4 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignedOut, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -8,11 +8,25 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import { api, RouterOutputs } from "~/utils/api";
 import { LoadingPage } from "~/components/Loading";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
   const { user } = useUser();
+
+  const [input, setInput] = useState<string>("");
+  console.log(input);
+
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      ctx.posts.getAll.invalidate();
+    },
+  });
+
   if (!user) return null;
 
   return (
@@ -28,7 +42,11 @@ const CreatePostWizard = () => {
         type="text"
         placeholder="Type Emoji!"
         className="grow bg-transparent outline-none"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        disabled={isPosting}
       />
+      <button onClick={() => mutate({ content: input })}>Post</button>
     </div>
   );
 };
@@ -105,6 +123,7 @@ const Home: NextPage = () => {
           </div>
           <Feed />
         </div>
+        {/* <SignOutButton /> */}
       </main>
     </>
   );
