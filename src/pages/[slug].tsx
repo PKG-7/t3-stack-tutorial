@@ -1,7 +1,13 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
+import PageLayout from "~/components/layout";
+import { LoadingPage } from "~/components/Loading";
+import PostView from "~/components/PostView";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
-import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
@@ -55,22 +61,8 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   );
 };
 
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import superjson from "superjson";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
-import PageLayout from "~/components/layout";
-import Image from "next/image";
-import { LoadingPage } from "~/components/Loading";
-import PostView from "../components/PostView";
-import dayjs from "dayjs";
-
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const ssg = generateSSGHelper();
 
   const slug = context.params?.slug;
 
